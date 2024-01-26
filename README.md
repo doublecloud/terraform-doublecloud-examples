@@ -73,7 +73,7 @@ Transfer from AWS RDS to DoubleCloud Clickhouse from customer AWS Account
 
 Transfer from AWS DocDB to DoubleCloud Clickhouse from customer AWS Account
 
-![aws_docdb_integration.drawio.png](./assets/aws_docdb_integration.drawio.png)
+![aws_docdb_integration.drawio.png](./assets/aws_docdb_integration.png)
 
 **Figure 5.** *AWS DocDB Integration*
 

@@ -74,12 +74,22 @@ resource "aws_route_table_association" "public" {
   subnet_id = aws_subnet.cdc_public_subnet[count.index].id
 }
 
+// Create a db subnet group named "cdc_db_subnet_group"
+resource "aws_db_subnet_group" "cdc_db_subnet_group" {
+  // The name and description of the db subnet group
+  name        = "cdc_db_subnet_group"
+  description = "DB subnet group for tutorial"
+
+  // Since the db subnet group requires 2 or more subnets, we are going to
+  // loop through our private subnets in "cdc_private_subnet" and
+  // add them to this db subnet group
+  subnet_ids = [for subnet in aws_subnet.cdc_public_subnet : subnet.id]
+}
+
 // Create a security group for the RDS instances called "cdc_db_sg"
 resource "aws_security_group" "cdc_db_sg" {
-  // Basic details like the name and description of the SG
   name        = "cdc-postgres-sg"
   description = "Security group for tutorial databases"
-  // We want the SG to be in the "cdc_vpc" VPC
   vpc_id = aws_vpc.cdc_vpc.id
 
   // To enable access to this database from DC Serverless runtime
@@ -99,7 +109,7 @@ resource "aws_security_group" "cdc_db_sg" {
   }
 
   ingress {
-    description = "Allow Postgresql traffic from local machin"
+    description = "Allow Postgresql traffic from local machine"
     from_port   = "5432"
     to_port     = "5432"
     protocol    = "tcp"
@@ -115,68 +125,20 @@ resource "aws_security_group" "cdc_db_sg" {
   }
 }
 
-// Create a db subnet group named "cdc_db_subnet_group"
-resource "aws_db_subnet_group" "cdc_db_subnet_group" {
-  // The name and description of the db subnet group
-  name        = "cdc_db_subnet_group"
-  description = "DB subnet group for tutorial"
-
-  // Since the db subnet group requires 2 or more subnets, we are going to
-  // loop through our private subnets in "cdc_private_subnet" and
-  // add them to this db subnet group
-  subnet_ids = [for subnet in aws_subnet.cdc_public_subnet : subnet.id]
-}
-
 // Create a DB instance called "cdc_database"
 resource "aws_db_instance" "cdc_database" {
-  // The amount of storage in gigabytes that we want for the database. This is
-  // being set by the settings.database.allocated_storage variable, which is
-  // set to 10
   allocated_storage = var.settings.database.allocated_storage
-
-  // The engine we want for our database. This is being set by the
-  // settings.database.engine variable, which is set to "mysql"
   engine = var.settings.database.engine
-
-  // The version of our database engine. This is being set by the
-  // settings.database.engine_version variable, which is set to "8.0.27"
   engine_version = var.settings.database.engine_version
-
-  // The instance type for our DB. This is being set by the
-  // settings.database.instance_class variable, which is set to "db.t2.micro"
   instance_class = var.settings.database.instance_class
-
-  // This is the name of our database. This is being set by the
-  // settings.database.db_name variable, which is set to "tutorial"
   db_name = var.settings.database.db_name
-
-  // This is part of db URI
   identifier = var.settings.database.identifier
-
-  // The master user of our database. This is being set by the
-  // db_username variable, which is being declared in our secrets file
   username = var.db_username
-
-  // The password for the master user. This is being set by the
-  // db_username variable, which is being declared in our secrets file
   password = var.db_password
-
-  // This is the DB subnet group "cdc_db_subnet_group"
   db_subnet_group_name = aws_db_subnet_group.cdc_db_subnet_group.id
-
-  // This is the security group for the database. It takes a list, but since
-  // we only have 1 security group for our db, we are just passing in the
-  // "cdc_db_sg" security group
   vpc_security_group_ids = [aws_security_group.cdc_db_sg.id]
-
-  // This refers to the skipping final snapshot of the database. It is a
-  // boolean that is set by the settings.database.skip_final_snapshot
-  // variable, which is currently set to true.
   skip_final_snapshot = var.settings.database.skip_final_snapshot
-
-  // For simplicity reason make it instance accessible from internet.
   publicly_accessible = true
-
   parameter_group_name = aws_db_parameter_group.cdc-settings.name
 }
 

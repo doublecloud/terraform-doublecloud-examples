@@ -1,6 +1,6 @@
 // AWS RDS Source
 resource "doublecloud_transfer_endpoint" "pg-source" {
-  name       = "chinook-pg-source"
+  name       = "cdc-pg-source"
   project_id = var.dc_project_id
   settings {
     postgres_source {
@@ -37,6 +37,7 @@ resource "doublecloud_transfer_endpoint" "kafka-cdc-target" {
         sasl {
           user      = "admin"
           mechanism = "KAFKA_MECHANISM_SHA512"
+          password  = "IEQjqAqRNiFWM0lP"
         }
       }
       topic_settings {
@@ -47,4 +48,14 @@ resource "doublecloud_transfer_endpoint" "kafka-cdc-target" {
       }
     }
   }
+}
+
+resource "doublecloud_transfer" "cdc-replication" {
+  name       = "cdc-replication"
+  project_id = var.dc_project_id
+  source     = doublecloud_transfer_endpoint.pg-source.id
+  target     = doublecloud_transfer_endpoint.kafka-cdc-target.id
+  type       = "INCREMENT_ONLY"
+  activated  = true
+  data_objects = ["public.my_little_pony"]
 }

@@ -8,7 +8,7 @@ resource "doublecloud_transfer_endpoint" "docdb-source" {
         on_premise {
           tls_mode {
             // by default we connect via VPC Peering and using TLS encryption, so we must specify ca-cert
-            ca_certificate = file("../assets/global-bundle.pem")
+            ca_certificate = file("../assets/aws-global-bundle.pem")
           }
           hosts = [aws_docdb_cluster.service.endpoint]
           port  = 27017

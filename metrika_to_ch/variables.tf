@@ -36,11 +36,11 @@ variable "dc_key_path" {
   description = "Path to DC key"
 }
 
-// Will create a transfer between kafka and clickhouse
+// Will create a transfer between metrika and clickhouse
 variable "enable_transfer" {
   type = bool
   default = false
-  description = "Create delivery from kafka to clickhouse via DoubleCloud.Transfer"
+  description = "Create delivery from metrika to clickhouse via DoubleCloud.Transfer"
 }
 
 // Metrika counter IDs

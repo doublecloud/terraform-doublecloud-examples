@@ -7,7 +7,7 @@ resource "doublecloud_clickhouse_cluster" "target-clickhouse" {
 
   resources {
     clickhouse {
-      resource_preset_id = "s1-c2-m4"
+      resource_preset_id = "s2-c2-m4"
       disk_size          = 32 * 1024 * 1024 * 1024 // 32 gb of Storage
       replica_count      = 1
     }

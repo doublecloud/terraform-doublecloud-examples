@@ -7,7 +7,7 @@ resource "doublecloud_kafka_cluster" "input-kafka" {
 
   resources {
     kafka {
-      resource_preset_id = "s1-c2-m4"
+      resource_preset_id = "s2-c2-m4"
       disk_size          = 32 * 1024 * 1024 * 1024 // 32 gb of Storage
       broker_count       = 1
       zone_count         = 1

@@ -29,28 +29,35 @@ variable "project_id" {
   description = "ID of the DoubleCloud project in which to create resources"
 }
 
-// Authorization in Double.Cloud work with key.json files, so we must specify were it located
-variable "dc_key_path" {
+// Authorization in Double.Cloud work with federation ID
+variable "federation_id" {
   type        = string
-  default     = "~/.config/auth_key.json"
-  description = "Path to DC key"
+  description = "Federation ID to auth"
 }
 
 // Will create a transfer between metrika and clickhouse
 variable "enable_transfer" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Create delivery from metrika to clickhouse via DoubleCloud.Transfer"
+}
+
+// Will create dashboard for metrika data
+variable "enable_visualization" {
+  type        = bool
+  default     = false
+  description = "Create sample visualization dashboard for metrika"
 }
 
 // Metrika counter IDs
 variable "metrika_counter_ids" {
-  type = list(number)
+  type        = list(number)
   description = "Metrika counter IDs to construct the source"
 }
 
 // Metrika token for authorization
+// see here: https://oauth.yandex.com/authorize?response_type=token&client_id=36b7fc9aa96c4fa09158bcacbbdc796a
 variable "metrika_token" {
-  type = string
+  type        = string
   description = "Metrika token to construct the source"
 }

@@ -19,6 +19,7 @@ resource "doublecloud_clickhouse_cluster" "target-clickhouse" {
   }
 
   access {
+    data_services = ["visualization"]
     ipv4_cidr_blocks = [
       {
         value       = "${var.my_ip}/32"

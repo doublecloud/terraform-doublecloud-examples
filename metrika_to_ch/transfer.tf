@@ -3,17 +3,17 @@ resource "doublecloud_transfer_endpoint" "metrika-source" {
   name       = "metrika-source"
   project_id = var.project_id
   settings {
-		metrika_source {
-			counter_ids = var.metrika_counter_ids
-			token       = var.metrika_token
-			metrika_stream {
-				stream_type = "METRIKA_STREAM_TYPE_HITS_V2"
-			}
-			metrika_stream {
-				stream_type = "METRIKA_STREAM_TYPE_VISITS"
-			}
-		}
-	}
+    metrika_source {
+      counter_ids = var.metrika_counter_ids
+      token       = var.metrika_token
+      metrika_stream {
+        stream_type = "METRIKA_STREAM_TYPE_HITS_V2"
+      }
+      metrika_stream {
+        stream_type = "METRIKA_STREAM_TYPE_VISITS"
+      }
+    }
+  }
 }
 
 resource "doublecloud_transfer_endpoint" "clickhouse-target" {

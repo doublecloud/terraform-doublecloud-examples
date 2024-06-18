@@ -46,7 +46,28 @@ variable "enable_transfer" {
 variable "enable_visualization" {
   type        = bool
   default     = false
-  description = "Create sample visualization dashboard for metrika"
+  description = "Create sample visualization connection for metrika"
+}
+
+// Will create dashboard for metrika data
+variable "enable_visualization_datasets" {
+  type        = bool
+  default     = false
+  description = "Create sample visualization datasets for metrika"
+}
+
+// Will create dashboard for metrika data
+variable "enable_visualization_charts" {
+  type        = bool
+  default     = false
+  description = "Create sample visualization charts for metrika"
+}
+
+// Will create dashboard for metrika data
+variable "enable_visualization_dashboards" {
+  type        = bool
+  default     = false
+  description = "Create sample visualization dashboards for metrika"
 }
 
 // Metrika counter IDs

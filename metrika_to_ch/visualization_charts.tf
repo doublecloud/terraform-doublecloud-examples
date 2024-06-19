@@ -8,6 +8,170 @@ locals {
           {
             "aggregation_locked" : true,
             "autoaggregated" : true,
+            "data_type" : "float",
+            "dataset_name" : "visits",
+            "fake_title" : null,
+            "field" : {
+              "aggregation" : "none",
+              "calc_spec" : {
+                "formula" : "LEAST(FLOAT(COUNTD([counteruseridhash_p2ek])), SUM([sign_4nlm] * 1.0))",
+                "kind" : "id_formula"
+              },
+              "cast" : "float",
+              "description" : null,
+              "hidden" : false,
+              "id" : "efa6a1b0-12aa-11ef-b40b-ff6fab10a629",
+              "title" : "users"
+            },
+            "has_auto_aggregation" : true,
+            "initial_data_type" : "float",
+            "local" : true,
+            "lock_aggregation" : false,
+            "managed_by" : "user",
+            "original_title" : null,
+            "quick_formula" : null,
+            "type" : "MEASURE",
+            "valid" : true,
+            "virtual" : false
+          },
+          {
+            "aggregation_locked" : true,
+            "autoaggregated" : false,
+            "data_type" : "string",
+            "dataset_name" : "visits",
+            "fake_title" : null,
+            "field" : {
+              "aggregation" : "none",
+              "calc_spec" : {
+                "formula" : "IF\n    [is_new_user_4th4] = 1 THEN 'New Users'\nELSE 'Returning Users'\nEND",
+                "kind" : "id_formula"
+              },
+              "cast" : "string",
+              "description" : null,
+              "hidden" : false,
+              "id" : "0304ab80-12ab-11ef-b40b-ff6fab10a629",
+              "title" : "human_readable_is_new_user"
+            },
+            "has_auto_aggregation" : false,
+            "initial_data_type" : "string",
+            "local" : true,
+            "lock_aggregation" : false,
+            "managed_by" : "user",
+            "original_title" : null,
+            "quick_formula" : null,
+            "type" : "DIMENSION",
+            "valid" : true,
+            "virtual" : false
+          }
+        ],
+        "datasets" : [
+          "visits"
+        ],
+        "extra_settings" : {
+          "labels_overlap" : null,
+          "labels_position" : "outside",
+          "show_title" : false,
+          "title" : "New chart"
+        },
+        "filters" : [],
+        "labels" : [
+          {
+            "field_ref" : {
+              "dataset_name" : "visits",
+              "id" : "efa6a1b0-12aa-11ef-b40b-ff6fab10a629",
+              "kind" : "ref"
+            },
+            "mode" : "absolute"
+          }
+        ],
+        "visualization" : {
+          "coloring" : {
+            "kind" : "measure",
+            "source" : {
+              "dataset_name" : "visits",
+              "id" : "efa6a1b0-12aa-11ef-b40b-ff6fab10a629",
+              "kind" : "ref"
+            },
+            "spec" : {
+              "kind" : "gradient_2_points",
+              "palette" : "golden",
+              "thresholds" : null
+            }
+          },
+          "kind" : "bar_chart",
+          "sort" : [],
+          "x" : [
+            {
+              "settings" : null,
+              "source" : {
+                "dataset_name" : "visits",
+                "id" : "efa6a1b0-12aa-11ef-b40b-ff6fab10a629",
+                "kind" : "ref"
+              }
+            }
+          ],
+          "x_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "efa6a1b0-12aa-11ef-b40b-ff6fab10a629",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : "off",
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
+          "y" : [
+            {
+              "settings" : null,
+              "source" : {
+                "dataset_name" : "visits",
+                "id" : "0304ab80-12ab-11ef-b40b-ff6fab10a629",
+                "kind" : "ref"
+              }
+            }
+          ],
+          "y_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "0304ab80-12ab-11ef-b40b-ff6fab10a629",
+                "mode" : "discrete"
+              }
+            ],
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : null,
+            "scale" : null,
+            "scale_value" : null,
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          }
+        }
+      },
+      "name" : "visits - is_new_user"
+    },
+    {
+      "chart" : {
+        "ad_hoc_fields" : [
+          {
+            "aggregation_locked" : true,
+            "autoaggregated" : true,
             "data_type" : "integer",
             "dataset_name" : "visits",
             "fake_title" : null,
@@ -137,6 +301,7 @@ locals {
           "coloring" : null,
           "columns" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "74a936a0-12b2-11ef-8ab9-fb90612e08b0",
@@ -144,6 +309,7 @@ locals {
               }
             },
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "381566a0-12b2-11ef-8ab9-fb90612e08b0",
@@ -151,6 +317,7 @@ locals {
               }
             },
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "598c5630-12b3-11ef-befe-f308851c66c5",
@@ -158,6 +325,7 @@ locals {
               }
             },
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "6bfb6c20-12b3-11ef-befe-f308851c66c5",
@@ -238,14 +406,37 @@ locals {
           "shaping" : null,
           "sort" : [],
           "x" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "3468f5b0-128c-11ef-b39f-65937033951d",
               "kind" : "ref"
             }
           },
+          "x_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "3468f5b0-128c-11ef-b39f-65937033951d",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : "off",
+            "labels_view" : "auto",
+            "nulls" : null,
+            "scale" : null,
+            "scale_value" : null,
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
           "y" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "280a02e0-12b5-11ef-85d9-eb496f5f4da8",
@@ -253,7 +444,44 @@ locals {
               }
             }
           ],
-          "y2" : []
+          "y2" : [],
+          "y2_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
+          "y_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "280a02e0-12b5-11ef-85d9-eb496f5f4da8",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          }
         }
       },
       "name" : "visits - start_url_page_views_by_time"
@@ -270,7 +498,7 @@ locals {
             "field" : {
               "aggregation" : "none",
               "calc_spec" : {
-                "formula" : "SUM([sign_4nlm] * [pageviews_6pw9])",
+                "formula" : "SUM([sign_rnr2] * [pageviews_s7no])",
                 "kind" : "id_formula"
               },
               "cast" : "integer",
@@ -299,7 +527,7 @@ locals {
             "field" : {
               "aggregation" : "none",
               "calc_spec" : {
-                "formula" : "SUM([sign_4nlm] * 1)",
+                "formula" : "SUM([sign_rnr2] * 1)",
                 "kind" : "id_formula"
               },
               "cast" : "integer",
@@ -328,7 +556,7 @@ locals {
             "field" : {
               "aggregation" : "none",
               "calc_spec" : {
-                "formula" : "LEAST(FLOAT(COUNTD([counteruseridhash_p2ek])), SUM([sign_4nlm] * 1.0))",
+                "formula" : "LEAST(FLOAT(COUNTD([counteruseridhash_leg1])), SUM([sign_rnr2] * 1.0))",
                 "kind" : "id_formula"
               },
               "cast" : "float",
@@ -373,6 +601,7 @@ locals {
           "sort" : [],
           "x" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "3468f5b0-128c-11ef-b39f-65937033951d",
@@ -380,13 +609,36 @@ locals {
               }
             },
             {
+              "settings" : null,
               "source" : {
                 "kind" : "measure_names"
               }
             }
           ],
+          "x_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "3468f5b0-128c-11ef-b39f-65937033951d",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : "off",
+            "labels_view" : "auto",
+            "nulls" : null,
+            "scale" : null,
+            "scale_value" : null,
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
           "y" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "a5a8e0b0-1295-11ef-ac31-4dd44008b3a5",
@@ -394,6 +646,7 @@ locals {
               }
             },
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "ca203470-1295-11ef-ac31-4dd44008b3a5",
@@ -401,13 +654,30 @@ locals {
               }
             },
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "dfab5770-1295-11ef-ac31-4dd44008b3a5",
                 "kind" : "ref"
               }
             }
-          ]
+          ],
+          "y_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "0-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          }
         }
       },
       "name" : "visits - summary_by_time"
@@ -462,14 +732,37 @@ locals {
           "shaping" : null,
           "sort" : [],
           "x" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "3468f5b0-128c-11ef-b39f-65937033951d",
               "kind" : "ref"
             }
           },
+          "x_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "3468f5b0-128c-11ef-b39f-65937033951d",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "yes",
+            "holidays" : "off",
+            "labels_view" : "auto",
+            "nulls" : null,
+            "scale" : null,
+            "scale_value" : null,
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
           "y" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "52602a00-12b1-11ef-a6cd-4f8593d63120",
@@ -477,7 +770,44 @@ locals {
               }
             }
           ],
-          "y2" : []
+          "y2" : [],
+          "y2_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
+          "y_settings" : {
+            "axis_format_mode" : "by-field",
+            "axis_modes" : [
+              {
+                "axis_id" : "52602a00-12b1-11ef-a6cd-4f8593d63120",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "0-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          }
         }
       },
       "name" : "visits — bounce_rate_by_time"
@@ -528,6 +858,7 @@ locals {
         "labels" : [],
         "visualization" : {
           "field" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "0d594400-12b1-11ef-9740-4537a430c254",
@@ -616,6 +947,7 @@ locals {
           "coloring" : null,
           "columns" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "6ddae740-12c3-11ef-b6cf-6d09986e1ff5",
@@ -623,6 +955,7 @@ locals {
               }
             },
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "9a6333d0-12c3-11ef-b6cf-6d09986e1ff5",
@@ -644,6 +977,124 @@ locals {
         }
       },
       "name" : "visits — country_city_page_views_table"
+    },
+    {
+      "chart" : {
+        "ad_hoc_fields" : [
+          {
+            "aggregation_locked" : true,
+            "autoaggregated" : true,
+            "data_type" : "integer",
+            "dataset_name" : "visits",
+            "fake_title" : null,
+            "field" : {
+              "aggregation" : "none",
+              "calc_spec" : {
+                "formula" : "SUM([sign_4nlm] * [pageviews_6pw9])",
+                "kind" : "id_formula"
+              },
+              "cast" : "integer",
+              "description" : null,
+              "hidden" : false,
+              "id" : "46f8ed60-12c9-11ef-86fa-6bf7ad6a4290",
+              "title" : "page_views"
+            },
+            "has_auto_aggregation" : true,
+            "initial_data_type" : "integer",
+            "local" : true,
+            "lock_aggregation" : false,
+            "managed_by" : "user",
+            "original_title" : null,
+            "quick_formula" : null,
+            "type" : "MEASURE",
+            "valid" : true,
+            "virtual" : false
+          }
+        ],
+        "datasets" : [
+          "visits"
+        ],
+        "extra_settings" : {
+          "labels_overlap" : null,
+          "labels_position" : "outside",
+          "show_title" : null,
+          "title" : null
+        },
+        "filters" : [],
+        "labels" : [],
+        "visualization" : {
+          "coloring" : {
+            "kind" : "dimension",
+            "mounts" : [],
+            "palette_id" : null,
+            "source" : {
+              "dataset_name" : "visits",
+              "id" : "dffaa7c0-12c8-11ef-a130-c522c1f319b1",
+              "kind" : "ref"
+            }
+          },
+          "kind" : "column_chart",
+          "sort" : [],
+          "x" : [
+            {
+              "settings" : null,
+              "source" : {
+                "dataset_name" : "visits",
+                "id" : "dffaa7c0-12c8-11ef-a130-c522c1f319b1",
+                "kind" : "ref"
+              }
+            }
+          ],
+          "x_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "dffaa7c0-12c8-11ef-a130-c522c1f319b1",
+                "mode" : "discrete"
+              }
+            ],
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : "off",
+            "labels_view" : "auto",
+            "nulls" : null,
+            "scale" : null,
+            "scale_value" : null,
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
+          "y" : [
+            {
+              "settings" : null,
+              "source" : {
+                "dataset_name" : "visits",
+                "id" : "46f8ed60-12c9-11ef-86fa-6bf7ad6a4290",
+                "kind" : "ref"
+              }
+            }
+          ],
+          "y_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          }
+        }
+      },
+      "name" : "visits — device_type_pie_chart"
     },
     {
       "chart" : {
@@ -732,24 +1183,107 @@ locals {
           "kind" : "area_chart_normalized",
           "sort" : [],
           "x" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "3468f5b0-128c-11ef-b39f-65937033951d",
               "kind" : "ref"
             }
           },
+          "x_settings" : null,
           "y" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "6d635a30-12ab-11ef-82a4-e39b6801a3f2",
                 "kind" : "ref"
               }
             }
-          ]
+          ],
+          "y_settings" : null
         }
       },
       "name" : "visits — is_new_user_by_time"
+    },
+    {
+      "chart" : {
+        "ad_hoc_fields" : [
+          {
+            "aggregation_locked" : true,
+            "autoaggregated" : false,
+            "data_type" : "markup",
+            "dataset_name" : "visits",
+            "fake_title" : null,
+            "field" : {
+              "aggregation" : "none",
+              "calc_spec" : {
+                "formula" : "URL([starturl_7b3l], [starturl_7b3l])",
+                "kind" : "id_formula"
+              },
+              "cast" : "markup",
+              "description" : null,
+              "hidden" : false,
+              "id" : "be860a90-27ee-11ef-b5b4-372693403b18",
+              "title" : "URL([StartURL], [StartURL])"
+            },
+            "has_auto_aggregation" : false,
+            "initial_data_type" : "markup",
+            "local" : true,
+            "lock_aggregation" : false,
+            "managed_by" : "user",
+            "original_title" : null,
+            "quick_formula" : null,
+            "type" : "DIMENSION",
+            "valid" : true,
+            "virtual" : false
+          }
+        ],
+        "datasets" : [
+          "visits"
+        ],
+        "extra_settings" : {
+          "labels_overlap" : null,
+          "labels_position" : null,
+          "show_title" : false,
+          "title" : "visits — landing_pages_views"
+        },
+        "filters" : [],
+        "labels" : [],
+        "visualization" : {
+          "coloring" : null,
+          "columns" : [
+            {
+              "settings" : null,
+              "source" : {
+                "dataset_name" : "visits",
+                "id" : "be860a90-27ee-11ef-b5b4-372693403b18",
+                "kind" : "ref"
+              }
+            },
+            {
+              "settings" : null,
+              "source" : {
+                "dataset_name" : "visits",
+                "id" : "afee2a30-128b-11ef-a189-23b88fc2e8f0",
+                "kind" : "ref"
+              }
+            }
+          ],
+          "kind" : "flat_table",
+          "sort" : [
+            {
+              "direction" : "DESC",
+              "source" : {
+                "dataset_name" : "visits",
+                "id" : "afee2a30-128b-11ef-a189-23b88fc2e8f0",
+                "kind" : "ref"
+              }
+            }
+          ]
+        }
+      },
+      "name" : "visits — landing_pages_views"
     },
     {
       "chart" : {
@@ -801,14 +1335,37 @@ locals {
           "shaping" : null,
           "sort" : [],
           "x" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "3468f5b0-128c-11ef-b39f-65937033951d",
               "kind" : "ref"
             }
           },
+          "x_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "3468f5b0-128c-11ef-b39f-65937033951d",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "yes",
+            "holidays" : "off",
+            "labels_view" : "auto",
+            "nulls" : null,
+            "scale" : null,
+            "scale_value" : null,
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
           "y" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "724f7a10-12b0-11ef-8d69-d5477ee6f962",
@@ -816,7 +1373,39 @@ locals {
               }
             }
           ],
-          "y2" : []
+          "y2" : [],
+          "y2_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
+          "y_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "0-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          }
         }
       },
       "name" : "visits — page_depth_by_time"
@@ -867,6 +1456,7 @@ locals {
         "labels" : [],
         "visualization" : {
           "field" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "d24e5360-12af-11ef-9960-31a2abec5189",
@@ -890,7 +1480,7 @@ locals {
             "field" : {
               "aggregation" : "none",
               "calc_spec" : {
-                "formula" : "SUM([sign_4nlm] * [pageviews_6pw9])",
+                "formula" : "SUM([sign_rnr2] * [pageviews_s7no])",
                 "kind" : "id_formula"
               },
               "cast" : "integer",
@@ -928,14 +1518,37 @@ locals {
           "shaping" : null,
           "sort" : [],
           "x" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "3468f5b0-128c-11ef-b39f-65937033951d",
               "kind" : "ref"
             }
           },
+          "x_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "3468f5b0-128c-11ef-b39f-65937033951d",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "yes",
+            "holidays" : "off",
+            "labels_view" : "auto",
+            "nulls" : null,
+            "scale" : null,
+            "scale_value" : null,
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
           "y" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "2a5dfa40-128f-11ef-8fc8-47eb2b8c9785",
@@ -943,7 +1556,44 @@ locals {
               }
             }
           ],
-          "y2" : []
+          "y2" : [],
+          "y2_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
+          "y_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "2a5dfa40-128f-11ef-8fc8-47eb2b8c9785",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          }
         }
       },
       "name" : "visits — page_views_by_time"
@@ -960,7 +1610,7 @@ locals {
             "field" : {
               "aggregation" : "none",
               "calc_spec" : {
-                "formula" : "SUM([sign_4nlm] * [pageviews_6pw9])",
+                "formula" : "SUM([sign_rnr2] * [pageviews_s7no])",
                 "kind" : "id_formula"
               },
               "cast" : "integer",
@@ -994,6 +1644,7 @@ locals {
         "labels" : [],
         "visualization" : {
           "field" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "8188d8e0-128e-11ef-8c43-53fc5ed3167f",
@@ -1113,14 +1764,37 @@ locals {
           "shaping" : null,
           "sort" : [],
           "x" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "3468f5b0-128c-11ef-b39f-65937033951d",
               "kind" : "ref"
             }
           },
+          "x_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "3468f5b0-128c-11ef-b39f-65937033951d",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "yes",
+            "holidays" : "off",
+            "labels_view" : "auto",
+            "nulls" : null,
+            "scale" : null,
+            "scale_value" : null,
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
           "y" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "5e8e1000-12af-11ef-a5ed-3d7d09fc30e5",
@@ -1128,7 +1802,44 @@ locals {
               }
             }
           ],
-          "y2" : []
+          "y2" : [],
+          "y2_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
+          "y_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "5e8e1000-12af-11ef-a5ed-3d7d09fc30e5",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "0-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          }
         }
       },
       "name" : "visits — time_on_site_dynamic"
@@ -1208,6 +1919,7 @@ locals {
         "labels" : [],
         "visualization" : {
           "field" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "85934c80-12ad-11ef-9758-4f7a002074e5",
@@ -1231,7 +1943,7 @@ locals {
             "field" : {
               "aggregation" : "none",
               "calc_spec" : {
-                "formula" : "LEAST(FLOAT(COUNTD([counteruseridhash_p2ek])), SUM([sign_4nlm] * 1.0))",
+                "formula" : "LEAST(FLOAT(COUNTD([counteruseridhash_leg1])), SUM([sign_rnr2] * 1.0))",
                 "kind" : "id_formula"
               },
               "cast" : "float",
@@ -1269,14 +1981,37 @@ locals {
           "shaping" : null,
           "sort" : [],
           "x" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "3468f5b0-128c-11ef-b39f-65937033951d",
               "kind" : "ref"
             }
           },
+          "x_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "3468f5b0-128c-11ef-b39f-65937033951d",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "yes",
+            "holidays" : "off",
+            "labels_view" : "auto",
+            "nulls" : null,
+            "scale" : null,
+            "scale_value" : null,
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
           "y" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "5d835590-1295-11ef-89e3-47ef20263eae",
@@ -1284,7 +2019,39 @@ locals {
               }
             }
           ],
-          "y2" : []
+          "y2" : [],
+          "y2_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
+          "y_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          }
         }
       },
       "name" : "visits — visitors_by_time"
@@ -1301,7 +2068,7 @@ locals {
             "field" : {
               "aggregation" : "none",
               "calc_spec" : {
-                "formula" : "LEAST(FLOAT(COUNTD([counteruseridhash_p2ek])), SUM([sign_4nlm] * 1.0))",
+                "formula" : "LEAST(FLOAT(COUNTD([counteruseridhash_leg1])), SUM([sign_rnr2] * 1.0))",
                 "kind" : "id_formula"
               },
               "cast" : "float",
@@ -1335,6 +2102,7 @@ locals {
         "labels" : [],
         "visualization" : {
           "field" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "94d783f0-128f-11ef-a18c-e5f28b276540",
@@ -1366,14 +2134,37 @@ locals {
           "shaping" : null,
           "sort" : [],
           "x" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "3468f5b0-128c-11ef-b39f-65937033951d",
               "kind" : "ref"
             }
           },
+          "x_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : [
+              {
+                "axis_id" : "3468f5b0-128c-11ef-b39f-65937033951d",
+                "mode" : "continuous"
+              }
+            ],
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "yes",
+            "holidays" : "off",
+            "labels_view" : "auto",
+            "nulls" : null,
+            "scale" : null,
+            "scale_value" : null,
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
           "y" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "afee2a30-128b-11ef-a189-23b88fc2e8f0",
@@ -1381,7 +2172,39 @@ locals {
               }
             }
           ],
-          "y2" : []
+          "y2" : [],
+          "y2_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "on",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          },
+          "y_settings" : {
+            "axis_format_mode" : "auto",
+            "axis_modes" : null,
+            "grid" : "off",
+            "grid_step" : "auto",
+            "grid_step_value" : 50,
+            "hide_labels" : "no",
+            "holidays" : null,
+            "labels_view" : "auto",
+            "nulls" : "ignore",
+            "scale" : "auto",
+            "scale_value" : "min-max",
+            "title" : "off",
+            "title_value" : "",
+            "type" : "linear"
+          }
         }
       },
       "name" : "visits — visits_by_time"
@@ -1473,21 +2296,25 @@ locals {
           "kind" : "area_chart",
           "sort" : [],
           "x" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "3468f5b0-128c-11ef-b39f-65937033951d",
               "kind" : "ref"
             }
           },
+          "x_settings" : null,
           "y" : [
             {
+              "settings" : null,
               "source" : {
                 "dataset_name" : "visits",
                 "id" : "3ce9e930-129e-11ef-86d6-e1d9244d0a45",
                 "kind" : "ref"
               }
             }
-          ]
+          ],
+          "y_settings" : null
         }
       },
       "name" : "visits — visits_by_traffic_source_by_time"
@@ -1508,6 +2335,7 @@ locals {
         "labels" : [],
         "visualization" : {
           "field" : {
+            "settings" : null,
             "source" : {
               "dataset_name" : "visits",
               "id" : "afee2a30-128b-11ef-a189-23b88fc2e8f0",

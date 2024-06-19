@@ -241,27 +241,6 @@ locals {
               },
               {
                 "element" : {
-                  "default_active_chart_tab_id" : "gA",
-                  "hide_title" : false,
-                  "kind" : "charts_container",
-                  "tabs" : [
-                    {
-                      "chart_name" : "visits - is_new_user",
-                      "id" : "gA",
-                      "title" : "New and returning users"
-                    }
-                  ]
-                },
-                "id" : "YK",
-                "placement" : {
-                  "h" : 17,
-                  "w" : 12,
-                  "x" : 0,
-                  "y" : 52
-                }
-              },
-              {
-                "element" : {
                   "default_active_chart_tab_id" : "xm",
                   "hide_title" : false,
                   "kind" : "charts_container",
@@ -409,32 +388,6 @@ locals {
               },
               {
                 "element" : {
-                  "default_active_chart_tab_id" : "ed",
-                  "hide_title" : false,
-                  "kind" : "charts_container",
-                  "tabs" : [
-                    {
-                      "chart_name" : "visits - start_url_page_views",
-                      "id" : "ed",
-                      "title" : "URL Views"
-                    },
-                    {
-                      "chart_name" : "visits — landing_pages_views",
-                      "id" : "4dx",
-                      "title" : "Landing Pages"
-                    }
-                  ]
-                },
-                "id" : "d5",
-                "placement" : {
-                  "h" : 24,
-                  "w" : 18,
-                  "x" : 0,
-                  "y" : 74
-                }
-              },
-              {
-                "element" : {
                   "default_active_chart_tab_id" : "B2n",
                   "hide_title" : false,
                   "kind" : "charts_container",
@@ -494,27 +447,6 @@ locals {
                   "h" : 17,
                   "w" : 18,
                   "x" : 18,
-                  "y" : 98
-                }
-              },
-              {
-                "element" : {
-                  "default_active_chart_tab_id" : "6q5",
-                  "hide_title" : false,
-                  "kind" : "charts_container",
-                  "tabs" : [
-                    {
-                      "chart_name" : "visits — device_type_pie_chart",
-                      "id" : "6q5",
-                      "title" : "Page views by device type"
-                    }
-                  ]
-                },
-                "id" : "9P6",
-                "placement" : {
-                  "h" : 17,
-                  "w" : 18,
-                  "x" : 0,
                   "y" : 98
                 }
               },

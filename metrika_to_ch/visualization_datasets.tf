@@ -9,7 +9,7 @@ locals {
             {
               "id" : "ee8110e0-120f-11ef-83ad-49e353bfd25b",
               "source_id" : "ee8110e1-120f-11ef-83ad-49e353bfd25b",
-              "title" : "default.hits_v2_${local.table_suffix}"
+              "title" : "hits_v2_${local.table_suffix}"
             }
           ],
           "joins" : [],
@@ -27,6 +27,19 @@ locals {
             "hidden" : false,
             "id" : "6557c690-1211-11ef-8237-9b5945a5d691",
             "title" : "signs_sum"
+          },
+          {
+            "aggregation" : "none",
+            "calc_spec" : {
+              "avatar_id" : "ee8110e0-120f-11ef-83ad-49e353bfd25b",
+              "field_name" : "EventDate",
+              "kind" : "direct"
+            },
+            "cast" : "date",
+            "description" : null,
+            "hidden" : false,
+            "id" : "eventdate_70oq",
+            "title" : "EventDate"
           },
           {
             "aggregation" : "none",
@@ -64,19 +77,6 @@ locals {
             "hidden" : false,
             "id" : "counterid_0s3u",
             "title" : "CounterID"
-          },
-          {
-            "aggregation" : "none",
-            "calc_spec" : {
-              "avatar_id" : "ee8110e0-120f-11ef-83ad-49e353bfd25b",
-              "field_name" : "EventDate",
-              "kind" : "direct"
-            },
-            "cast" : "date",
-            "description" : null,
-            "hidden" : false,
-            "id" : "eventdate_70oq",
-            "title" : "EventDate"
           },
           {
             "aggregation" : "none",
@@ -1525,14 +1525,15 @@ locals {
           {
             "aggregation" : "none",
             "calc_spec" : {
-              "formula" : "SUM([sign_4nlm] * 1)",
-              "kind" : "id_formula"
+              "avatar_id" : "4256b650-1299-11ef-b39f-65937033951d",
+              "field_name" : "StartDate",
+              "kind" : "direct"
             },
-            "cast" : "integer",
+            "cast" : "date",
             "description" : null,
             "hidden" : false,
-            "id" : "afee2a30-128b-11ef-a189-23b88fc2e8f0",
-            "title" : "signs_sum"
+            "id" : "startdate_xns9",
+            "title" : "StartDate"
           },
           {
             "aggregation" : "none",
@@ -1549,6 +1550,18 @@ locals {
           {
             "aggregation" : "none",
             "calc_spec" : {
+              "formula" : "SUM([sign_4nlm] * 1)",
+              "kind" : "id_formula"
+            },
+            "cast" : "integer",
+            "description" : null,
+            "hidden" : false,
+            "id" : "afee2a30-128b-11ef-a189-23b88fc2e8f0",
+            "title" : "signs_sum"
+          },
+          {
+            "aggregation" : "none",
+            "calc_spec" : {
               "avatar_id" : "4256b650-1299-11ef-b39f-65937033951d",
               "field_name" : "CounterID",
               "kind" : "direct"
@@ -1558,19 +1571,6 @@ locals {
             "hidden" : false,
             "id" : "counterid_rwhn",
             "title" : "CounterID"
-          },
-          {
-            "aggregation" : "none",
-            "calc_spec" : {
-              "avatar_id" : "4256b650-1299-11ef-b39f-65937033951d",
-              "field_name" : "StartDate",
-              "kind" : "direct"
-            },
-            "cast" : "date",
-            "description" : null,
-            "hidden" : false,
-            "id" : "startdate_xns9",
-            "title" : "StartDate"
           },
           {
             "aggregation" : "none",
@@ -4478,7 +4478,7 @@ locals {
             "id" : "3021c332-1299-11ef-b39f-65937033951d",
             "spec" : {
               "kind" : "sql_query",
-              "sql" : "SELECT\n    *,\n    `TrafficSource.ID`[indexOf(`TrafficSource.Model`, if(NOT has(`TrafficSource.Model`,5),2,5))] AS CROSS_DEVICE_LAST_SIGNIFICANTTrafficSource,\n    toDate(`TrafficSource.StartTime`[indexOf(`TrafficSource.Model`,3)]) = StartDate AS is_new_user,\n    toString(RegionID) AS country_name,\n\\ttoString(RegionID) AS city_name\nFROM default.visits_${local.table_suffix}"
+              "sql" : "SELECT\n    *,\n    `TrafficSource.ID`[indexOf(`TrafficSource.Model`, if(NOT has(`TrafficSource.Model`,5),2,5))] AS CROSS_DEVICE_LAST_SIGNIFICANTTrafficSource,\n    toDate(`TrafficSource.StartTime`[indexOf(`TrafficSource.Model`,3)]) = StartDate AS is_new_user,\n    toString(RegionID) AS country_name,\n\ttoString(RegionID) AS city_name\nFROM default.visits_${local.table_suffix}"
             },
             "title" : "visits_enriched"
           }

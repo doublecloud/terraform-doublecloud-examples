@@ -4478,7 +4478,7 @@ locals {
             "id" : "3021c332-1299-11ef-b39f-65937033951d",
             "spec" : {
               "kind" : "sql_query",
-              "sql" : "SELECT\\n    *,\\n    `TrafficSource.ID`[indexOf(`TrafficSource.Model`, if(NOT has(`TrafficSource.Model`,5),2,5))] AS CROSS_DEVICE_LAST_SIGNIFICANTTrafficSource,\\n    toDate(`TrafficSource.StartTime`[indexOf(`TrafficSource.Model`,3)]) = StartDate AS is_new_user,\\n    toString(RegionID) AS country_name,\\n\\ttoString(RegionID) AS city_name\\nFROM default.visits_${local.table_suffix}"
+              "sql" : "SELECT\n    *,\n    `TrafficSource.ID`[indexOf(`TrafficSource.Model`, if(NOT has(`TrafficSource.Model`,5),2,5))] AS CROSS_DEVICE_LAST_SIGNIFICANTTrafficSource,\n    toDate(`TrafficSource.StartTime`[indexOf(`TrafficSource.Model`,3)]) = StartDate AS is_new_user,\n    toString(RegionID) AS country_name,\n\\ttoString(RegionID) AS city_name\nFROM default.visits_${local.table_suffix}"
             },
             "title" : "visits_enriched"
           }

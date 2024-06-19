@@ -11,7 +11,7 @@ resource "doublecloud_workbook" "metrika-viewer" {
   title      = "Metrika"
 
   config = jsonencode({
-    "charts" : var.enable_visualization_charts ? tolist(local.charts) : [],
+    "charts" : local.charts,
     "dashboards" : var.enable_visualization_dashboards ? tolist(local.dashboards) : [],
     "datasets" : var.enable_visualization_datasets ? tolist(local.datasets) : []
   })

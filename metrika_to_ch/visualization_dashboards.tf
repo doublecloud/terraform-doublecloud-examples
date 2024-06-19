@@ -35,6 +35,7 @@ locals {
                 "element" : {
                   "comparison_operation" : null,
                   "default_value" : {
+                    "kind" : "multi_string",
                     "values" : [
                       "day"
                     ]

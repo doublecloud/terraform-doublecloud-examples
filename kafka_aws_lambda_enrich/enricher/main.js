@@ -20,22 +20,41 @@ module.exports.handler = async (event, context, callback) => {
 
     callback(null, {
         Records: req.Records.map(record => {
-            console.log('record ip', ip)
             return {
                 eventID: record.eventID,
                 invokeIdentityArn: record.invokeIdentityArn,
                 eventVersion: record.eventVersion,
                 eventName: record.eventName,
                 eventSourceARN: record.eventSourceARN,
-                cdc: processRecord(record.cdc, ip),
-                result: 'Ok'
+                cdc_splitted: processRecords(record.cdc, ip),
+                result: 'Split'
             }
         }),
     })
 }
 
-function processRecord(record) {
-    return exampleEvent(record.columnvalues[4])
+function processRecords(record, ip) {
+    // message body is bytes, so base64 encoded string in JS, need to decode it
+    let rawMessage = atob(record.columnvalues[5])
+    // split raw message into rows, and process one by one
+    return rawMessage.split('\n').filter(str => str).map(row => {
+        let event = exampleEvent('')
+        // we splitted rows by \n
+        // now we have something like `ts=2024-06-20T21:06:48Z&ip=FILL_ME&data={"appid":"rand_id_1","payload":{"EMAIL":"1@gmail.com","MOBILE":"0"},"identity":"1@gmail.com"}`
+        // let's extract values from it via URLSearchParams
+        let params = new URLSearchParams(row)
+
+        let data = JSON.parse(params.get("data"))
+        event.columnvalues[0] = params.get("ts")
+        event.columnvalues[1] = ip // value fetched from external resource
+        if (data) {
+            event.columnvalues[2] = data.payload
+            event.columnvalues[3] = data.appid // extract child property
+            event.columnvalues[4] = data.identity
+        }
+        event.commitTime = record.commitTime
+        return event
+    })
 }
 
 function exampleEvent(data, ip) {
@@ -46,12 +65,16 @@ function exampleEvent(data, ip) {
         "columnnames":[ // List of columns
             "ts",
             "ip",
-            "data"
+            "data",
+            "appid",
+            "identity",
         ],
         "columnvalues":[ // List of column values
             (new Date()).toISOString(),
             JSON.stringify(ip),
-            data
+            data,
+            null,
+            null,
         ],
         "table_schema":[ // Resulted schema
             {
@@ -66,6 +89,14 @@ function exampleEvent(data, ip) {
             },
             {
                 "name":"data",
+                "type":"any"
+            },
+            {
+                "name":"appid",
+                "type":"utf8"
+            },
+            {
+                "name":"identity",
                 "type":"utf8"
             }
         ]

@@ -477,7 +477,7 @@ locals {
           }
         ]
       },
-      "name" : "Yandex Metrica - Demo"
+      "name" : "Yandex Metrica default"
     }
   ]
 }

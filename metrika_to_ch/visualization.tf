@@ -8,7 +8,7 @@ resource "doublecloud_workbook" "metrika-viewer" {
   count = var.enable_visualization ? 1 : 0
 
   project_id = var.project_id
-  title      = "Metrika"
+  title      = "Metrika for ${local.table_suffix}"
 
   config = jsonencode({
     "charts" : local.charts,

@@ -1,6 +1,6 @@
 resource "doublecloud_clickhouse_cluster" "target-clickhouse" {
   project_id = var.project_id
-  name       = "metrika-clickhouse"
+  name       = "metrika-clickhouse-mdb-auto-purge-off"
   region_id  = var.region_id
   cloud_type = "aws"
   network_id = doublecloud_network.main-network.id

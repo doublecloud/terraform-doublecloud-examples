@@ -1,5 +1,8 @@
 .terraform.lock.hcl
-terraform.tfstate
-terraform.tfstate.backup
+*terraform.tfstate
+*terraform.tfstate*.backup
 .terraform
 authorized_key.json
+.idea
+.vscode
+.DS_Store

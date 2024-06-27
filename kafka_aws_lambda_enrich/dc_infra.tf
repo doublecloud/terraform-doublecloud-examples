@@ -69,6 +69,9 @@ resource "doublecloud_transfer_endpoint" "stream-processor-source" {
         }
       }
       topic_name = local.source_topic
+      parser {
+        blank {}
+      }
     }
   }
 }
@@ -94,7 +97,7 @@ resource "doublecloud_transfer_endpoint" "stream-processor-target" {
         }
       }
       serializer {
-        json {}
+        auto {}
       }
     }
   }

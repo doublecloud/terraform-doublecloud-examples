@@ -2,7 +2,7 @@ terraform {
   required_providers {
     doublecloud = {
       source  = "registry.terraform.io/doublecloud/doublecloud"
-      version = ">= 0.1.20"
+      version = ">= 0.1.22"
     }
     aws = {
       source  = "hashicorp/aws"

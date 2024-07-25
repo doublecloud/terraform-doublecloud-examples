@@ -22,7 +22,7 @@ var (
 	broker   = flag.String("broker", "", "")
 	user     = flag.String("user", "default", "")
 	password = flag.String("password", "default", "")
-	topic    = flag.String("topic", "demo-events", "")
+	topic    = flag.String("topic", "clickhouse-events", "")
 	messages = flag.Int("message-count", 0, "max message count")
 )
 

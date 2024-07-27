@@ -28,6 +28,7 @@ __Table of Contents__
 1. [aws-rds-to-clickhouse](#aws-rds-to-clickhouse)
 1. [aws_doc_db_intergation](#aws_doc_db_intergation)
 1. [aws-s3-lb-ingest](#aws-s3-lb-ingest)
+1. [dynamodb-kinesis-ingest](#dynamodb-kinesis-ingest)
 
 ## [Hello World!](https://github.com/doublecloud/terraform-doublecloud-examples/tree/main/hello-world)
 
@@ -85,5 +86,11 @@ End to end terraform example for setting up AWS NLB access logs observability st
 
 **Figure 6.** *AWS LoadBalancer logs to Clickhouse*
 
+## [DynamoDB CDC to Clickhouse](https://github.com/doublecloud/terraform-doublecloud-examples/tree/main/kinesis_dynamo_cdc_to_ch)
 
+Ingest real-time data from DynamoDB into an existing DoubleCloud Clickhouse cluster.
+
+![aws_s3_lb_observability.png](./kinesis_dynamo_cdc_to_ch/assets/architecture.png)
+
+**Figure 7.** *DynamoDB cdc to Clickhouse*
 

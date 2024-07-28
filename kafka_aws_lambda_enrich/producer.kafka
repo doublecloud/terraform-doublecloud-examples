@@ -7,6 +7,13 @@ ts={{time.recent}}&ip=FILL_ME&useragent={{internet.userAgent}}&data={"appid":"ra
 ###
 
 CONSUMER consumer-group-id
+topic: source-topic
+partitions: 0
+from: latest
+
+###
+
+CONSUMER consumer-group-id
 topic: target-topic
 partitions: 0
 from: latest

@@ -70,7 +70,13 @@ resource "doublecloud_transfer_endpoint" "stream-processor-source" {
       }
       topic_name = local.source_topic
       parser {
-        blank {}
+        raw_table {
+          value_as_bytes = false
+          keys_as_bytes  = false
+          add_timestamp  = true
+          add_headers    = true
+          add_key        = true
+        }
       }
     }
   }

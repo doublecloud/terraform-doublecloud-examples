@@ -34,8 +34,7 @@ module.exports.handler = async (event, context, callback) => {
 }
 
 function processRecords(record, ip) {
-    // message body is bytes, so base64 encoded string in JS, need to decode it
-    let rawMessage = atob(record.columnvalues[5])
+    let rawMessage = record.columnvalues[6]
     // split raw message into rows, and process one by one
     return rawMessage.split('\n').filter(str => str).map(row => {
         let event = exampleEvent('')

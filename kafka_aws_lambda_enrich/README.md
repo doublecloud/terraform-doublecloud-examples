@@ -134,6 +134,32 @@ Example run configuration
   -var="federation_id=YOUR_FEDERATION_ID"
 ```
 
+## Demo
+
+There is an example of producer.kafka file that utilized VS Code kafka [toolkit](https://marketplace.visualstudio.com/items?itemName=jeppeandersen.vscode-kafka)
+
+```shell
+PRODUCER non-keyed-json-message
+topic: source-topic
+ts={{time.recent}}&ip=FILL_ME&useragent={{internet.userAgent}}&data={"appid":"rand_id_{{random.number}}","payload":{"EMAIL":"{{internet.email}}","MOBILE":"{{phone.phoneNumberFormat}}"},"identity":"{{internet.exampleEmail}}"}
+```
+
+Produce a message with random generated content.
+Enricher will parse it and enrich with current lambda public ipv4 into:
+
+```json
+{"appid":"rand_id_27212","data":{"EMAIL":"Laisha28@yahoo.com","MOBILE":"366-380-1466"},"identity":"Lucas_Dickinson@example.com","ip":"44.201.33.239","ts":"1722183591238"}
+```
+
+To run consumer you can run:
+
+```shell
+CONSUMER consumer-group-id
+topic: target-topic
+partitions: 0
+from: latest
+```
+
 ## Notes
 
 - Ensure you review and modify variables, such as region-specific configurations or security settings, before applying the Terraform configurations.

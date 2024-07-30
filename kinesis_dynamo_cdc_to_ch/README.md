@@ -49,17 +49,7 @@ terraform apply \
 
 ## Result
 
-Once example is deployed you will see a dasboard:
-
-![results.png](./assets/results.png)
-
-All raw data will be available via clickhouse instance, see below we SQL example:
-
-![results_websql.png](./assets/results_websql.png)
-
-Here is resulted dashboard:
-
-![results_dashboard.png](./assets/results_dashboard.png)
+All raw data will be available via clickhouse instance.
 
 ## Notes
 

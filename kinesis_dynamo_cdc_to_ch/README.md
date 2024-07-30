@@ -40,7 +40,11 @@ Example run configuration
 ```shell
 terraform apply \
   -var="my_ip=$(curl -4 ifconfig.me)" \
-  -var="my_ipv6=$(curl -6 ifconfig.me)"
+  -var="my_ipv6=$(curl -6 ifconfig.me)" \
+  -var="project_id=DC_PROJECT_ID" \ 
+  -var="cluster_id=DC_CH_CLUSTER_ID" \ 
+  -var="aws_access_key_id=AWS_ACCESS_KEY" \
+  -var="aws_secret_access_key=AWS_SECRET_ACCESS_KEY"
 ```
 
 ## Result

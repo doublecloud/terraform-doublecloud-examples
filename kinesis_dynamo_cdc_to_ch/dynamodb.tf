@@ -54,3 +54,19 @@ resource "aws_dynamodb_table_item" "dynamodb_schema_table_item" {
   item       = jsonencode(each.value)
 }
 
+resource "aws_kinesis_stream" "realtime-data-stream" {
+  name = "${aws_dynamodb_table.my_table}_stream"
+
+  stream_mode_details {
+    stream_mode = "ON_DEMAND"
+  }
+
+  tags = {
+    Name = "realtime-data-stream"
+  }
+}
+
+resource "aws_dynamodb_kinesis_streaming_destination" "example" {
+  stream_arn = aws_kinesis_stream.realtime-data-stream.arn
+  table_name = aws_dynamodb_table.my_table.name
+}

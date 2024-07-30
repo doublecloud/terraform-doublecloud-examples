@@ -12,22 +12,32 @@ resource "doublecloud_transfer_endpoint" "source" {
           schema {
             fields {
               field {
-                name     = "user_ts"
-                type     = "datetime"
-                key      = false
-                required = false
+                name     = "ID"
+                type     = "utf8"
+                key      = true
+                required = true
+                path     = "dynamodb.NewImage.ID.S"
               }
               field {
-                name     = "id"
-                type     = "uint64"
-                key      = false
-                required = false
-              }
-              field {
-                name     = "message"
+                name     = "Name"
                 type     = "utf8"
                 key      = false
                 required = false
+                path     = "dynamodb.NewImage.Name.S"
+              }
+              field {
+                name     = "Age"
+                type     = "int64"
+                key      = false
+                required = false
+                path     = "dynamodb.NewImage.Age.N"
+              }
+              field {
+                name     = "LastEvent"
+                type     = "utf8"
+                key      = false
+                required = false
+                path     = "eventName"
               }
             }
           }

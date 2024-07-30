@@ -1,0 +1,19 @@
+###
+
+PRODUCER non-keyed-json-message
+topic: source-topic
+ts={{time.recent}}&ip=FILL_ME&useragent={{internet.userAgent}}&data={"appid":"rand_id_{{random.number}}","payload":{"EMAIL":"{{internet.email}}","MOBILE":"{{phone.phoneNumberFormat}}"},"identity":"{{internet.exampleEmail}}"}
+
+###
+
+CONSUMER consumer-group-id
+topic: source-topic
+partitions: 0
+from: latest
+
+###
+
+CONSUMER consumer-group-id
+topic: target-topic
+partitions: 0
+from: latest

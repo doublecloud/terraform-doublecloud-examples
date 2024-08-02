@@ -14,12 +14,12 @@ variable "aws_profile" {
 
 variable "project_id" {
   type        = string
-  description = "ID of the DoubleCloud project in which to create resources"
+  description = "ID of the DoubleCloud project to create resources in"
 }
 
 variable "federation_id" {
   type        = string
-  description = "Federation ID to auth"
+  description = "Federation ID for auth"
 }
 
 variable "my_ip" {

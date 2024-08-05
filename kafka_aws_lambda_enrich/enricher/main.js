@@ -26,7 +26,7 @@ module.exports.handler = async (event, context, callback) => {
                 eventVersion: record.eventVersion,
                 eventName: record.eventName,
                 eventSourceARN: record.eventSourceARN,
-                cdc_splitted: processRecords(record.cdc, ip),
+                cdc_split: processRecords(record.cdc, ip),
                 result: 'Split'
             }
         }),
@@ -35,20 +35,20 @@ module.exports.handler = async (event, context, callback) => {
 
 function processRecords(record, ip) {
     let rawMessage = record.columnvalues[6]
-    // split raw message into rows, and process one by one
+    // Split the raw message into rows and process them one by one
     return rawMessage.split('\n').filter(str => str).map(row => {
         let event = exampleEvent('')
-        // we splitted rows by \n
-        // now we have something like `ts=2024-06-20T21:06:48Z&ip=FILL_ME&data={"appid":"rand_id_1","payload":{"EMAIL":"1@gmail.com","MOBILE":"0"},"identity":"1@gmail.com"}`
-        // let's extract values from it via URLSearchParams
+        // Split the rows by \n
+        // The result looks similar to `ts=2024-06-20T21:06:48Z&ip=FILL_ME&data={"appid":"rand_id_1","payload":{"EMAIL":"1@gmail.com","MOBILE":"0"},"identity":"1@gmail.com"}`
+        // Extract values from it using `URLSearchParams`
         let params = new URLSearchParams(row)
 
         let data = JSON.parse(params.get("data"))
         event.columnvalues[0] = params.get("ts")
-        event.columnvalues[1] = ip // value fetched from external resource
+        event.columnvalues[1] = ip // Value fetched from an external resource
         if (data) {
             event.columnvalues[2] = data.payload
-            event.columnvalues[3] = data.appid // extract child property
+            event.columnvalues[3] = data.appid // Extract the child property
             event.columnvalues[4] = data.identity
         }
         event.commitTime = record.commitTime
@@ -58,9 +58,9 @@ function processRecords(record, ip) {
 
 function exampleEvent(data, ip) {
     return {
-        "commitTime":1718876759101000000, // Time of change
-        "kind":"insert", // Kind of change
-        "table":"source-topic", // Name of resulted table
+        "commitTime":1718876759101000000, // Event time
+        "kind":"insert", // Event type
+        "table":"source-topic", // Target table name
         "columnnames":[ // List of columns
             "ts",
             "ip",
@@ -77,8 +77,8 @@ function exampleEvent(data, ip) {
         ],
         "table_schema":[ // Resulted schema
             {
-                "name":"ts",       // name of column
-                "type":"datetime", // type of column
+                "name":"ts",       // Column name
+                "type":"datetime", // Column type
                 "key":true,
                 "required":true
             },

@@ -1,6 +1,6 @@
 resource "doublecloud_clickhouse_cluster" "target-clickhouse" {
   project_id = var.project_id
-  name       = "metrika-clickhouse-mdb-auto-purge-off"
+  name       = "metrica-clickhouse-mdb-auto-purge-off"
   region_id  = var.region_id
   cloud_type = "aws"
   network_id = doublecloud_network.main-network.id
@@ -8,7 +8,7 @@ resource "doublecloud_clickhouse_cluster" "target-clickhouse" {
   resources {
     clickhouse {
       resource_preset_id = "s2-c2-m4"
-      disk_size          = 32 * 1024 * 1024 * 1024 // 32 gb of Storage
+      disk_size          = 32 * 1024 * 1024 * 1024 // 32 GB of Storage
       replica_count      = 1
     }
   }

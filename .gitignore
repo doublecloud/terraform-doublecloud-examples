@@ -6,3 +6,4 @@ authorized_key.json
 .idea
 .vscode
 .DS_Store
+out

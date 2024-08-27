@@ -19,7 +19,7 @@ resource "doublecloud_kafka_cluster" "alpha-kafka" {
 
   resources {
     kafka {
-      resource_preset_id = "s1-c2-m4"
+      resource_preset_id = "s2-c2-m4"
       disk_size          = 34359738368
       broker_count       = 1
       zone_count         = 1
@@ -35,16 +35,16 @@ resource "doublecloud_kafka_cluster" "alpha-kafka" {
   access {
     ipv4_cidr_blocks = [
       {
-        // My Local IP-v4 address
+        // Local IPv4 address
         value       = "${var.my_ip}/32"
-        description = "My IP"
+        description = "My IP address"
       }
     ]
     ipv6_cidr_blocks = [
       {
-        // My Local IP-v6 address
+        // Local IPv6 address
         value       = "${var.my_ipv6}/128"
-        description = "My IPv6"
+        description = "My IPv6 address"
       }
     ]
   }

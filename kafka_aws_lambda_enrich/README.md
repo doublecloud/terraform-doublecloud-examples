@@ -1,73 +1,82 @@
-### Kafka Data Enrichment
+# Data enrichment with Kafka and AWS Lambda
 
-In this example we will enrich data inside kafka topic with Lambda-function call.
-
+This example for the DoubleCloud Terraform provider shows
+how to enrich data in a Kafka topic using AWS Lambda functions.
 
 ## Project Structure
 
-### 1. `aws_infra.tf`
+The project contains the following files:
 
-This file manages the existing AWS infrastructure. 
-For AWS Infra we require one lambda function to handle our actual data transformation and enrichment.
+1. `aws_infra.tf`: Manages the existing AWS infrastructure and
+    contains one Lambda function that handles data transformation and enrichment.
 
-### 2. `dc_infra.tf`
+2. `dc_infra.tf`: Manages the DoubleCloud infrastructure and creates a managed Apache Kafka cluster and a transfer.
+    The Kafka cluster is created in a DoubleCloud-managed VPC.
+    The transfer reads data from this cluster and writes it back after transformations are applied in AWS Lambda.
 
-This file manages the existing DoubleCloud infrastructure.
-In DoubleCloud we create kafka cluster in double-cloud managed VPC and transfer that reads data from this cluster and write them back after lambda transformation.
+3. `encricher/main.js`: Implements the cloud transformation function in JavaScript.
+    This function emulates a real-world use case — it parses, splits, and enriches data.
 
-### 3. `encricher/main.js`
-
-Implementation of cloud transformation function in JS. This function emulate real-world use case. 
-It parse, split and enrich output data.
-
-### 4. `producer/main.go`
-
-Simple producer app, that generates semi-structured data into kafka. This data is need advanced processing, which handles by enricher cloud function.
+4. `producer/main.go`: A simple producer application that ingests semi-structured data into Kafka.
+    This data needs advanced processing that the enriching cloud function takes care of.
 
 ## Architecture
 
 ![architectures.png](./assets/architectures.png)
 
-There is a transfer between kafka <> kafka, this transfer fetch from one topic and write to another one.
+Data is transferred from and to Kafka.
+The transfer does the following:
 
-Between them there is a lambda function that split, parse and enrich data in between.
+1. Fetches data from a Kafka topic.
 
-Lambda function written in JS, see `encircher`-folder.
+2. Sends the data to a Lambda function that splits, parses, and enriches it.
 
-Transfer use kinesis-like message processing.
+3. Writes the processed data to another Kafka topic.
 
-## Data Transformation Flow
+The Lambda function is written in JavaScript. You can find the code in the `encircher` directory.
 
-When you enable cloud-function data transformation, DC.Transfer buffers incoming data. The buffering size is configurable, default buffering size hint is 1 MB. The Lambda buffering interval hint ranges between 0 and 900 seconds. The default Lambda buffering interval 1 sec.
-DC.Transfer then invokes the specified cloud function asynchronously. The transformed data is sent from Lambda to DC.Transfer. DC.Transfer parse output and then sends it to the destination.
+The transfer uses Kinesis-like message processing.
 
-### Important
+## Data transformation flow
 
-The Lambda synchronous invocation mode has a payload size limit of 6 MB for both the request and the response. Make sure that your buffering size for sending the request to the function is less than or equal to 6 MB. Also ensure that the response that your function returns doesn't exceed 6 MB.
+When you enable data transformation with Lambda functions, DoubleCloud Transfer buffers the incoming data.
+The buffering size is configurable with the buffering size hint of 1 MB.
+The Lambda buffering interval hint ranges between 0 and 900 seconds.
+The default Lambda buffering interval is 1 sec.
 
-### Data Transformation and Status Model
+DoubleCloud Transfer invokes the cloud function asynchronously.
+The transformed data is sent from the Lambda function to Transfer.
+It parses the output and sends it to the destination.
 
-All transformed records from Lambda must contain the following parameters, or Amazon Data Firehose rejects them and treats that as a data transformation failure.
+> **IMPORTANT:**
+> The Lambda synchronous invocation mode has a payload size limit of 6 MB for both the request and response.
+> Make sure that your buffering size for sending the request to the function is less than or equal to 6 MB.
+> Also ensure that the response that your function returns doesn’t exceed 6 MB.
 
-Each batch of messages encoded as:
+### Data transformation and status model
+
+All the transformed records from Lambda must contain the following parameters.
+Otherwise, Amazon Data Firehose rejects them and treats it as a data transformation failure.
+
+Each batch of messages is encoded as the following:
 
 ```json
 {
   "Records": [
     {
       "cdc": {
-        "commitTime":1718876759101000000, // Time of change, unix-nano seconds
-        "kind":"insert",                  // Kind of change, can be insert / update / delete
-        "schema":"",                      // Name of resulted schema
-        "table":"table_name",             // Name of resulted table
-        "columnnames":[],                 // List of columns, should be in same order as columnvalues
+        "commitTime":1718876759101000000, // Event time in Unix nanoseconds
+        "kind":"insert",                  // Event type. Possible values are `insert`, `update`, or `delete`
+        "schema":"",                      // Target schema name
+        "table":"table_name",             // Target table name
+        "columnnames":[],                 // List of columns. Should be in the same order as `columnvalues`
         "columnvalues":[],                // List of column values
-        "table_schema":[                  // Resulted schema
+        "table_schema":[                  // Result schema
           {
-            "name":"ts",                  // name of column
-            "type":"datetime",            // type of column
-            "key":true,                   // is column primary-key
-            "required":true               // is column required
+            "name":"ts",                  // Column name
+            "type":"datetime",            // Column type
+            "key":true,                   // Indicates if the column is the primary-key
+            "required":true               // Inficates if the column is required
           }
         ]
       }
@@ -76,56 +85,69 @@ Each batch of messages encoded as:
 }
 ```
 
-Inside `cdc` field there is DC-`event`.
+The `cdc` field contains a DoubleCloud event.
 
-For each record important fields:
+Each record contains the following important fields:
 
-**commitTime**:  Time of change, unix-nano seconds, it's a physical time of event, usually shall not be changed
+* `commitTime`: Event time in Unix nanoseconds.
+    It’s usually immutable because it specifies the time when the event took place.
 
-**kind**:  Kind of change, can be `insert` / `update` / `delete`. For inserts and deletes you also must provide `oldkeys`
+* `kind`: Event type.
+    Possible values are `insert`, `update`, or `delete`.
+    For inserts and deletes, you also must provide `oldkeys`.
 
-**table**: Name of target table
+* `table`: Target table name.
 
-**schema**: Name of target `db` / `schema` / `namespace`
+* `schema`: Target `db`, `schema`, or `namespace` name.
 
-**columnnames**: List of column names that presented in change-items
+* `columnnames`: List of column names from events.
 
-**columnvalues**: List of column values that contains in resulted event.
+* `columnvalues`: List of column values from events.
 
-**table_schema**: List of result table columns.
+* `table_schema`: List of result table columns.
 
 
 ### Result Handling
 
-Semantic of lambda call invocation should be strict, on each record sended to lambda we shall return exactly on result.
+The semantic of Lambda call invocation should be strict.
+For each record sent to Lambda, we return exactly one result.
 
+* `result`: Status of the record’s data transformation.
+    Possible values are:
 
-**result**:
-The status of the data transformation of the record.
+    * `Ok`: The record was transformed successfully
+    * `Dropped`: The record was dropped intentionally by your processing logic
+    * `ProcessingFailed`: The record couldn’t be transformed
+    * `Split`:  The record multiplied
 
-The possible values are:
-- `Ok` - the record was transformed successfully
-- `Dropped` - the record was dropped intentionally by your processing logic
-- `ProcessingFailed` - the record could not be transformed
-- `Split` - the record multiplied
+If a record has a status of `Ok`, `Dropped`, `Split`, DoubleCloud Transfer considers it successfully processed.
+Otherwise, it’s processed unsuccessfully.
 
-If a record has a status of Ok or Dropped or Split, DC.Transfer considers it successfully processed.
-Otherwise, it unsuccessfully processed.
+If the result is `Ok`, the function should return a result record with the `cdc` field.
+If the result is `Split`, the function should return a result record with the `cdc_split` field —
+a list of DoubleCloud `event` values.
 
-If result is `Ok` - function should return in result record with `cdc` field.
-If result is `Split` - function should return in result record with `cdc_splitted` field, which is a list of DC `event`-s.
+## Step-by-step guide
 
+1. If you haven’t already,
+    [install Terraform](https://developer.hashicorp.com/terraform/install).
 
-## Getting Started
+1. Clone this repository:
 
-1. **Prerequisites:** Ensure you have Terraform installed.
-2. **Clone the Repository:** Clone this repository to your local environment.
-3. **AWS Credentials:** Set up AWS credentials (`default` profile).
-4. **Double Cloud Credentials:** Set up Double Cloud credentails, see [this]( https://double.cloud/docs/en/public-api/tutorials/transfer-api-quickstart) link for details.
-4. **Prepare Variables:** Prepare variables in the `env.tfvars` files as needed, or path them from CLI-arguments.
-5. **Terraform Apply:** Run `terraform init` followed by `terraform apply` to provision the infrastructure.
+    ```shell
+    git@github.com:doublecloud/terraform-doublecloud-examples.git
+    ```
 
-Example run configuration
+1. Get your AWS credentials (the `default` profile).
+
+1. Get your DoubleCloud credentials. For details, refer to [DoubleCloud docs]( https://double.cloud/docs/en/public-api/tutorials/transfer-api-quickstart).
+
+1. Create a `env.tfvars` with variables or provide the values as CLI arguments
+   
+1. Run `terraform init` and `terraform apply` to download the providers and provision the infrastructure.
+
+Example `terraform apply` command with variables passed as arguments:
+
 ```shell
  terraform apply \
   -var="my_ip=$(curl -4 ifconfig.me)" \                                                                                          
@@ -136,7 +158,8 @@ Example run configuration
 
 ## Demo
 
-There is an example of producer.kafka file that utilized VS Code kafka [toolkit](https://marketplace.visualstudio.com/items?itemName=jeppeandersen.vscode-kafka)
+An example of the `producer.kafka` file 
+that uses the [VS Code kafka toolkit](https://marketplace.visualstudio.com/items?itemName=jeppeandersen.vscode-kafka):
 
 ```shell
 PRODUCER non-keyed-json-message
@@ -144,14 +167,14 @@ topic: source-topic
 ts={{time.recent}}&ip=FILL_ME&useragent={{internet.userAgent}}&data={"appid":"rand_id_{{random.number}}","payload":{"EMAIL":"{{internet.email}}","MOBILE":"{{phone.phoneNumberFormat}}"},"identity":"{{internet.exampleEmail}}"}
 ```
 
-Produce a message with random generated content.
-Enricher will parse it and enrich with current lambda public ipv4 into:
+It produces a message with randomly generated content.
+The enricher then parses it and enriches with the current Lambda public IPv4 address into the following:
 
 ```json
 {"appid":"rand_id_27212","data":{"EMAIL":"Laisha28@yahoo.com","MOBILE":"366-380-1466"},"identity":"Lucas_Dickinson@example.com","ip":"44.201.33.239","ts":"1722183591238"}
 ```
 
-To run consumer you can run:
+To run the consumer, use the following command:
 
 ```shell
 CONSUMER consumer-group-id
@@ -162,13 +185,11 @@ from: latest
 
 ## Notes
 
-- Ensure you review and modify variables, such as region-specific configurations or security settings, before applying the Terraform configurations.
-- Double-check the IAM roles and permissions for AWS and DoubleCloud resources to ensure smooth connectivity and data transfer.
-- For any issues or additional configurations needed, refer to the respective Terraform file and adjust accordingly.
-- To debug cloud function utilize logs from double-cloud transfer and AWS Lambda
-- To ensure that data processed correctly use `Test` button on Source Endpoint or resulting Transfer 
-
----
-
-Feel free to adjust the sections, descriptions, and images as needed to accurately represent your project structure and integration process!
-
+* Before applying the Terraform configuration, make sure you reviewed and modified variables,
+    such as region-specific configurations or security settings
+* Double-check the IAM roles and permissions for AWS and DoubleCloud resources
+    to ensure smooth connectivity and data transfer.
+* For any issues or additional configurations needed, refer to the respective Terraform file and adjust accordingly.
+* To debug the cloud function, use the logs from DoubleCloud Transfer and AWS Lambda.
+* To ensure that data is processed correctly,
+    use the **Test** button in the source endpoint or the transfer.

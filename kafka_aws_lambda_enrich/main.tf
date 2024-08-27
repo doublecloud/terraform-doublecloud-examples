@@ -18,6 +18,6 @@ terraform {
     }
   }
 
-  // This is the required version of Terraform
+  // Required version of Terraform
   required_version = "~> 1.5.6"
 }

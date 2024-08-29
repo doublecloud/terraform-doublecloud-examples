@@ -1,6 +1,6 @@
 // Grab newly create Clickhouse data
 data "doublecloud_clickhouse" "target" {
-  name       = doublecloud_clickhouse_cluster.target-clickhouse.name
+  name       = doublecloud_clickhouse_cluster.target.name
   project_id = var.project_id
 }
 

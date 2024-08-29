@@ -1,9 +1,9 @@
-resource "doublecloud_clickhouse_cluster" "target-clickhouse" {
+resource "doublecloud_clickhouse_cluster" "target" {
   project_id = var.project_id
   name       = "clickstream-clickhouse"
   region_id  = var.aws_region_id
   cloud_type = "aws"
-  network_id = doublecloud_network.main-network.id
+  network_id = doublecloud_network.main.id
 
   resources {
     clickhouse {

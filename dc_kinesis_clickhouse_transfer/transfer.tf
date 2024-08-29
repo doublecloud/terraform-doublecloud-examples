@@ -1,5 +1,5 @@
 resource "doublecloud_transfer_endpoint" "source" {
-  name       = "kinesis-source"
+  name       = "kinesis_source"
   project_id = var.project_id
   settings {
     kinesis_source {
@@ -69,7 +69,7 @@ resource "doublecloud_transfer_endpoint" "source" {
   }
 }
 
-resource "doublecloud_transfer_endpoint" "clickstream-target" {
+resource "doublecloud_transfer_endpoint" "target" {
   count      = var.enable_transfer ? 1 : 0
   name       = "clickstream-target"
   project_id = var.project_id
@@ -78,7 +78,7 @@ resource "doublecloud_transfer_endpoint" "clickstream-target" {
       clickhouse_cleanup_policy = "DROP"
       connection {
         address {
-          cluster_id = doublecloud_clickhouse_cluster.target-clickhouse.id
+          cluster_id = doublecloud_clickhouse_cluster.target.id
         }
         database = "default"
         user     = "admin"
@@ -87,12 +87,12 @@ resource "doublecloud_transfer_endpoint" "clickstream-target" {
   }
 }
 
-resource "doublecloud_transfer" "clickstream-transfer" {
+resource "doublecloud_transfer" "clickstream" {
   count      = var.enable_transfer ? 1 : 0
   name       = "clickstream-transfer"
   project_id = var.project_id
   source     = doublecloud_transfer_endpoint.source.id
-  target     = doublecloud_transfer_endpoint.clickstream-target[count.index].id
+  target     = doublecloud_transfer_endpoint.target[count.index].id
   type       = "INCREMENT_ONLY"
   activated  = true
 }

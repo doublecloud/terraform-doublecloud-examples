@@ -1,5 +1,5 @@
 // VPC for Kinesis and Clickhouse networks
-resource "doublecloud_network" "main-network" {
+resource "doublecloud_network" "main" {
   project_id      = var.project_id
   name            = "clickstream-network"
   region_id       = var.aws_region_id

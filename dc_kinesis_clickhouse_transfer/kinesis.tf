@@ -1,4 +1,4 @@
-resource "aws_kinesis_stream" "terraform_stream_input" {
+resource "aws_kinesis_stream" "this" {
   name                = var.stream_name
   shard_level_metrics = ["IncomingBytes", "OutgoingBytes"]
   retention_period    = 24

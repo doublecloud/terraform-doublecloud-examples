@@ -1,14 +1,14 @@
-// Add a connection for to Clickhouse Cluster
+// Add a connection to the ClickHouse cluster
 // With this connection we can later add datasets / charts / dashboard
 locals {
-  table_suffix = doublecloud_transfer.metrika-transfer[0].id
+  table_suffix = doublecloud_transfer.metrica-transfer[0].id
 }
 
-resource "doublecloud_workbook" "metrika-viewer" {
+resource "doublecloud_workbook" "metrica-viewer" {
   count = var.enable_visualization ? 1 : 0
 
   project_id = var.project_id
-  title      = "Metrika for ${local.table_suffix}"
+  title      = "Metrica for ${local.table_suffix}"
 
   config = jsonencode({
     "charts" : local.charts,

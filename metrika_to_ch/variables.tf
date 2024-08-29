@@ -16,69 +16,69 @@ variable "my_ipv6" {
   sensitive   = true
 }
 
-// This example host infra on top of AWS cloud provider, so we must choose AWS region
+// This example deploys resources in AWS
 variable "region_id" {
   type        = string
-  description = "ID of the AWS region in which to create resources"
+  description = "ID of the AWS region to create resources in"
   default     = "eu-central-1"
 }
 
-// You can see this project_id on https://app.double.cloud/project-settings page
+// You can find the project ID at https://app.double.cloud/project-settings
 variable "project_id" {
   type        = string
-  description = "ID of the DoubleCloud project in which to create resources"
+  description = "ID of the DoubleCloud project to create resources in"
 }
 
-// Authorization in Double.Cloud work with federation ID
+// Authorization in DoubleCloud work with federation ID
 variable "federation_id" {
   type        = string
-  description = "Federation ID to auth"
+  description = "Federation ID for auth"
 }
 
-// Will create a transfer between metrika and clickhouse
+// Creates a transfer between Yandex Metrica and ClickHouse
 variable "enable_transfer" {
   type        = bool
   default     = false
-  description = "Create delivery from metrika to clickhouse via DoubleCloud.Transfer"
+  description = "Create a data transfer pipeline from Metrica to the ClickHouse cluster with DoubleCloud Transfer"
 }
 
-// Will create dashboard for metrika data
+// Creates a dashboard for the Metrica data
 variable "enable_visualization" {
   type        = bool
   default     = false
-  description = "Create sample visualization connection for metrika"
+  description = "Create a sample visualization connection for Metrica"
 }
 
-// Will create dashboard for metrika data
+// Creates a dashboard for the Metrica data
 variable "enable_visualization_datasets" {
   type        = bool
   default     = false
-  description = "Create sample visualization datasets for metrika"
+  description = "Create sample visualization datasets for Metrica"
 }
 
-// Will create dashboard for metrika data
+// Creates a dashboard for the Metrica data
 variable "enable_visualization_charts" {
   type        = bool
   default     = false
-  description = "Create sample visualization charts for metrika"
+  description = "Create sample visualization charts for Metrica"
 }
 
-// Will create dashboard for metrika data
+// Creates a dashboard for the Metrica data
 variable "enable_visualization_dashboards" {
   type        = bool
   default     = false
-  description = "Create sample visualization dashboards for metrika"
+  description = "Create a sample visualization dashboard for Metrica"
 }
 
-// Metrika counter IDs
-variable "metrika_counter_ids" {
+// Metrica counter IDs
+variable "metrica_counter_ids" {
   type        = list(number)
-  description = "Metrika counter IDs to construct the source"
+  description = "Metrica counter IDs for the source endpoint"
 }
 
-// Metrika token for authorization
-// see here: https://oauth.yandex.com/authorize?response_type=token&client_id=36b7fc9aa96c4fa09158bcacbbdc796a
-variable "metrika_token" {
+// Metrica token for authorization
+// You can get a token at https://oauth.yandex.com/authorize?response_type=token&client_id=36b7fc9aa96c4fa09158bcacbbdc796a
+variable "metrica_token" {
   type        = string
-  description = "Metrika token to construct the source"
+  description = "Metrica token for the source endpoint"
 }

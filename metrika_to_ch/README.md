@@ -1,60 +1,80 @@
-# Terraform Project: DoubleCloud clikchouse with Metrika connector
+# Replicating data from Yandex Metrica to DoubleCloud ClickHouse
 
-This Terraform project aims to integrate an existing DoubleCloud Clickhouse cluster with [Metrika](https://metrika.yandex.ru/list).
+This example for the DoubleCloud Terraform provider shows
+how to replicate and visualize data from [Yandex Metrica](https://metrika.yandex.ru/list) using DoubleCloud Transfer, Managed service for ClickHouse, and Visualization.
+This end-to-end example project includes creating a ClickHouse cluster, data pipeline, and visualization dashboard.
 
 ![achitecture.png](./assets/achitecture.png)
 
-Project cover e2e example project with cluster, transfer and dashboard.
+This example project uses AWS, but DoubleCloud resources can also be deployed in Google Cloud.
 
-## Project Structure
+## Project structure
 
-### 1. `network.tf`
+The project contains the following files:
 
-This file init DC-related infra, in particular DC-network.
+1. `network.tf`: Manages the DoubleCloud infrastructure, including the network.
 
-### 2. `clickhouse.tf`
+2. `clickhouse.tf`: Establishes connectivity between AWS and DoubleCloud by configuring VPC peering.
+    This enables communication between the environments.
 
-Establishes the connectivity between AWS and DoubleCloud by setting up the necessary Virtual Private Cloud (VPC) Peering to ensure communication between the environments.
+3. `transfer.tf`: Configures a data transfer pipeline from [Metrica](https://metrika.yandex.ru/list) to the ClickHouse cluster on DoubleCloud.
+    It involves deploying a transfer worker in the *replication* mode —
+    it automatically syncs new data with a minimal possible lag.
 
-### 3. `transfer.tf`
+4. `visualization.tf`: Configures DoubleCloud Visualization, creates a workbook, with a connection.
+    Inactive by default.
+    To enable it, use the `enable_visualization` variable.
 
-Configures the data transfer mechanism from the [Metrika](https://metrika.yandex.ru/list) tag instance to the DoubleCloud ClickHouse cluster. This will involve setting up **replication** transfer worker. New data will be sync automatically with minimal lag possible.
+5. `visualization_datasets.tf`: Creates two datasets for the `hits` and `visits` tables in the ClickHouse cluster.
+    These tables contain the hits and sessions (visits) data from Metrica respectively.
+    Inactive by default.
+    To enable it, use the `enable_visualization_datasets` variable.
 
-### 4. `visualization.tf`
+6. `visualization_charts.tf`: Creates a list of default charts with key metrics from Metrica tables. 
+    Inactive by default. 
+    To enable it, use the `enable_visualization_charts` variable. 
 
-Configure initial DC.Visualization, create workbook, with a connection. By default, disabled, can be enabled wiht `enable_visualization` variable.
-
-### 5. `visualization_datasets.tf`
-
-Create 2 datasets, for `hits` and `visits` table, those tables cames from transfer. By default, disabled, can be enabled wiht `enable_visualization_datasets` variable.
-
-### 6. `visualization_charts.tf`
-
-Create list of default charts with key metrics from Metrika tables. By default, disabled, can be enabled wiht `enable_visualization_charts` variable. 
-
-### 7. `visualization_dashboard.tf`
-
-Compose demo-dashboard from list of charts. By default, disabled, can be enabled wiht `enable_visualization_dashboard` variable.
+7. `visualization_dashboard.tf`: Creates a demo dashboard from a list of charts.
+    Inactive by default.
+    To enable it, use the `enable_visualization_dashboard` variable.
 
 
-## Getting Started
+## Step-by-step guide
 
-1. **Prerequisites:** Ensure you have Terraform installed.
-2. **Clone the Repository:** Clone this repository to your local environment.
-3. **Metria Credentials:** Get a metrika key, from [here](https://oauth.yandex.com/authorize?response_type=token&client_id=36b7fc9aa96c4fa09158bcacbbdc796a)
-4. **Double Cloud Credentials:** Set up Double Cloud credentails, see [this]( https://double.cloud/docs/en/public-api/tutorials/transfer-api-quickstart) link for details.
-4. **Prepare Variables:** Prepare variables in the `env.tfvars` files as needed, or path them from CLI-arguments.
-5. **Terraform Apply:** Run `terraform init` followed by `terraform apply` to provision the infrastructure.
+1. If you haven’t already,
+    [install Terraform](https://developer.hashicorp.com/terraform/install).
 
-Example run configuration
+1. Clone this repository:
+
+    ```shell
+    git clone git@github.com:doublecloud/terraform-doublecloud-examples.git
+    ```
+
+1. Get a Yandex Metrica access token in
+    [Yandex OAuth](https://oauth.yandex.com/authorize?response_type=token&client_id=36b7fc9aa96c4fa09158bcacbbdc796a).
+
+1. Make sure you have Metrica PRO or API access enabled in your Yandex Metrica account.
+    If it’s not enabled or you’re unsure if it’s enabled,
+    contact the {{ DC }} support and include your Metrica Tag ID in the message.
+    We’ll contact the Metrica support team on your behalf and request them to enable API access for you.
+
+1. [Create an API key](https://double.cloud/docs/en/administration/step-by-step/create-api-key) on DoubleCloud.
+
+1. Add variables to the `env.tfvars` file.
+    Alternatively, you can pass them as CLI arguments.
+
+1. Run `terraform init` and `terraform apply` to download the providers and provision the infrastructure.
+
+An example `terraform apply` command with variables passed as arguments looks as follows:
+
 ```shell
 terraform apply \
   -var="my_ip=$(curl -4 ifconfig.me)" \
   -var="my_ipv6=$(curl -6 ifconfig.me)" \
   -var="project_id=MY_PROJECT" \
   -var="federation_id=MY_AUTH_FEDERATION" \
-  -var="metrika_counter_ids=[METRIKA_TAG_INSTANCE]" \
-  -var="metrika_token=METRIKA_TOKEN" \
+  -var="metrica_counter_ids=[METRICA_TAG_INSTANCE]" \
+  -var="metrica_token=METRICA_TOKEN" \
   -var="enable_transfer=true" \
   -var="enable_visualization=true" \
   -var="enable_visualization_datasets=true" \
@@ -64,24 +84,29 @@ terraform apply \
 
 ## Result
 
-Once example is deployed you will see a dasboard:
+Once the infrastructure has been deployed, the following assets will be available in a new in DoubleCloud Visualization:
 
 ![results.png](./assets/results.png)
 
-All raw data will be available via clickhouse instance, see below we SQL example:
-
-![results_websql.png](./assets/results_websql.png)
-
-Here is resulted dashboard:
+The resulting dashboard with your Yandex Metrica data will look as follows:
 
 ![results_dashboard.png](./assets/results_dashboard.png)
 
+All the raw data replicated from Metrica is available in the ClickHouse cluster,
+and you can [access it in WebSQL](https://double.cloud/docs/en/managed-clickhouse/websql):
+
+![results_websql.png](./assets/results_websql.png)
+
+You can also [connect to the ClickHouse cluster with an IDE or CLI tool](https://double.cloud/docs/en/managed-clickhouse/step-by-step/cluster-db-connect).
+
 ## Notes
 
-- Ensure you review and modify variables, such as region-specific configurations or security settings, before applying the Terraform configurations.
-- Double-check the IAM roles and permissions for AWS and DoubleCloud resources to ensure smooth connectivity and data transfer.
-- For any issues or additional configurations needed, refer to the respective Terraform file and adjust accordingly.
-- Metrika tag must be marked as `Metrika Pro` on metrika side, this can be done by contact metrika support
+* Before applying the Terraform configuration, make sure you reviewed and modified variables,
+    such as region-specific configurations or security settings.
+* Double-check the IAM roles and permissions for AWS and DoubleCloud resources
+    to ensure smooth connectivity and data transfer.
+* If you encounter issues or want to modify the configuration,
+    make changes in the corresponding Terraform files.
 
 ---
 

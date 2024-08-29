@@ -1,5 +1,4 @@
-// Here is where we are defining
-// our Terraform settings
+// Terraform settings
 terraform {
   required_providers {
     doublecloud = {

@@ -1,4 +1,4 @@
-// Add a connection for to Clickhouse Cluster
+// Add a connection to the ClickHouse cluster
 // With this connection we can later add datasets / charts / dashboard
 locals {
   charts = [

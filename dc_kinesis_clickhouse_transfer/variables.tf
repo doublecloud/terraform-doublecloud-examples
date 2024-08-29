@@ -29,7 +29,7 @@ variable "project_id" {
 }
 
 variable "enable_transfer" {
-  description = "Create delivery from kafka to clickhouse via DoubleCloud.Transfer"
+  description = "Create delivery from Kinesis to clickhouse via DoubleCloud.Transfer"
   type        = bool
   default     = false
 }

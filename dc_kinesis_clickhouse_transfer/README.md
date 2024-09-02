@@ -32,6 +32,7 @@ Once we have clusters set up, we can start building a clickstream solution from 
 For testing purposes, you can use the AwsCli to insert data into the kinesis stream. This only requires having AwsCli installed. In addition to the previous step, AWS profile is required to be authenticated and has permissions to create Kinesis stream and insert in kinesis.
 For production use cases, you should consider setting up networking access via [this](https://double.cloud/docs/en/vpc/connect-dc-to-aws) guide.
 
+The following example will result in a tabled called TERRAFORM_TEST_STREAM_1_unparsed due to the data not matching the schema defined in the transfer:
 ```shell
 aws kinesis put-record \ 
 --stream-name TERRAFORM_TEST_STREAM_1 \ 
@@ -45,6 +46,27 @@ aws kinesis put-record \
     "SequenceNumber": "49655344900802692514217175455629362318208481605544714538"
 }
 ```
+
+The following example will result in a tabled called TERRAFORM_TEST_STREAM_2 due to the data matching the schema defined in the transfer:
+```shell
+aws kinesis put-record \ 
+--stream-name TERRAFORM_TEST_STREAM_2 \ 
+--partition-key 1 \
+--cli-binary-format raw-in-base64-out \
+--data '{ "Topic":"test", 
+         "Partition":300, 
+         "Offset": 5, 
+         "Value": 
+         "Hello World!",
+        }' \
+--region eu-central-1
+.....
+{
+    "ShardId": "shardId-000000000001",
+    "SequenceNumber": "49655344900802754556293623182084816055446925142171714538"
+}
+```
+
 
 ## Clickhouse delivery via DoubleCloud.Transfer
 
@@ -169,6 +191,47 @@ FROM  ${STREAM_NAME}_unparsed LIMIT 100
 └─────────┘
 
 1 row in set. Elapsed: 0.323 sec.
+
+-- example for retrieving a record
+SELECT * 
+FROM TERRAFORM_TEST_STREAM_1_unparsed 
+where _offset = 15406028529354473235
+
+
+[{"unparsed_row":"{\"user_id\":\"user6\", \"score\":300}",
+"reason":"ParseVal nil Topic raw(<nil>)",
+"_timestamp":"2024-08-29 10:32:57.448951",
+"_partition":"{\"cluster\":\"\",\"partition\":3,\
+"topic\":\"TERRAFORM_TEST_STREAM_1\"}",
+"_offset":"15406028529354473235","_idx":1}]
+```
+
+This transfer automatically creates a table called: `${STREAM_NAME}`, 
+the name was inferred from the Kinesis stream name, and it delivers rows into it:
+
+```sql
+SELECT count(*)
+FROM  ${STREAM_NAME} LIMIT 100
+
+┌─count()─┐
+│    6    │
+└─────────┘
+
+1 row in set. Elapsed: 0.323 sec.
+
+-- example for retrieving a record
+SELECT * 
+FROM TERRAFORM_TEST_STREAM_2
+where _offset = 5
+
+[{
+"Value":"Hello World!",
+"Timestamp":"2024-09-02 10:28:57.448351",
+"Partition":300,
+"Topic":"TERRAFORM_TEST_STREAM_2",
+"Offset":5,
+}]
+
 ```
 
 To see what happens inside, you can explore transfer logs and metrics:
